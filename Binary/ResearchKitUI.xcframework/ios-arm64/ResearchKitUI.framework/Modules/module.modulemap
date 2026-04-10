@@ -1,0 +1,12 @@
+framework module ResearchKitUI {
+    umbrella header "ResearchKitUI.h"
+    module iOS {
+        exclude header "ORKColorChoiceCellGroup.h"
+    }
+    export *
+    module * { export * }
+}
+
+module ResearchKitUI.Swift {
+  header "ResearchKitUI-Swift.h"
+}

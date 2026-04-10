@@ -10,12 +10,20 @@ let package = Package(
         .library(
             name: "ResearchKit",
             targets: ["ResearchKit"]
+        ),
+        .library(
+            name: "ResearchKitUI",
+            targets: ["ResearchKitUI"]
         )
     ],
     targets: [
         .binaryTarget(
             name: "ResearchKit",
             path: "Binary/ResearchKit.xcframework"
+        ),
+        .binaryTarget(
+            name: "ResearchKitUI",
+            path: "Binary/ResearchKitUI.xcframework"
         )
     ]
 )
