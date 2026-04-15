@@ -31,7 +31,7 @@
 #import <ResearchKit/ORKResult.h>
 
 /**
- A result object from a web view step.
+ The `ORKWebViewStepResult` class represents the result of a web view step (`ORKWebViewStep`).
  
  A web view result is produced by the task view controller when it presents a web view step.
  
@@ -42,16 +42,6 @@ ORK_CLASS_AVAILABLE
 /**
  The answer produced by the webview.
  */
-@property (nonatomic, nullable) NSString *result;
-
-/**
- The html stored within the userInfo of the result.
- */
-@property (nonatomic, nullable, readonly, getter=getHTML) NSString *html;
-
-/**
- The html with a signature added stored within the userInfo of the result.
- */
-@property (nonatomic, nullable, readonly, getter=getHTMLWithSignature) NSString *htmlWithSignature;
+@property (nonatomic, nullable) NSString* result;
 
 @end

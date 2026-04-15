@@ -29,7 +29,7 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import <ResearchKit/ORKStep.h>
 
 
@@ -39,8 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKConsentSignature;
 
 /**
- A step that represents the consent review process.
- 
+ The `ORKConsentReviewStep` class is used to represent the consent review process.
  Typically, the consent review process consists of three main parts:
  
  1. Consent document review. In this part, you display the consent document for review. Users

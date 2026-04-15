@@ -29,18 +29,14 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-
-#if TARGET_OS_IOS
 #import <ResearchKit/ORKStep.h>
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKAnswerFormat;
 @class ORKLearnMoreItem;
-@class ORKFormStep;
 
 /**
  The `ORKQuestionStep` class is a concrete subclass of `ORKStep` that represents
@@ -51,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  When the task completes, the user's answer is encoded in the result hierarchy
  in the task view controller.
  
- When a task view controller presents an `ORKQuestionStep` object, it instantiates an `ORKFormStepViewController` object to present the step. The actual
+ When a task view controller presents an `ORKQuestionStep` object, it instantiates an `ORKQuestionStepViewController` object to present the step. The actual
  visual presentation depends on the answer format.
  
  When you need to present more than one question at the same time, it can be appropriate
@@ -77,32 +73,20 @@ ORK_CLASS_AVAILABLE
                                       question:(nullable NSString *)question
                                     answer:(nullable ORKAnswerFormat *)answerFormat;
 
-#if TARGET_OS_IOS
 /**
- Returns a new question step that includes the specified identifier, title, question, and answer format.
+ Returns a new question step that includes the specified identifier, title, question, answer, and learnMoreItem format.
  
  @param identifier    The identifier of the step (a step identifier should be unique within the task).
- @param text      A localized string that represents the  text.
  @param title         A localized string that represents the primary text of the question.
- @param placeholder       A localized string that represents the placeholder text displayed before an answer has been entered.
  @param question      A localized string that represents the question as a text.
- @param presentationStyle      An enum that represents the presentation styles to apply to the question
- @param tagText       The value displayed as a tag if set.
- @param learnMoreItem     A LearnMoreItem object that presents a learn more button in the card header view
- @param useCardView     A property to present the question with a card view. Default to YES;
  @param answerFormat  The format in which the answer is expected.
+ @param learnMoreItem A LearnMoreItem object that presents a learn more button in the card header view
  */
 + (instancetype)questionStepWithIdentifier:(NSString *)identifier
-                                      text:(nullable NSString *)text
-                               placeholder:(nullable NSString *)placeholder
                                      title:(nullable NSString *)title
                                   question:(nullable NSString *)question
-                         presentationStyle:(nullable NSString *)presentationStyle
-                                   tagText:(nullable NSString *)tagText
                                     answer:(nullable ORKAnswerFormat *)answerFormat
-                             learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem
-                               useCardView:(nullable NSNumber *)useCardView;
-#endif
+                             learnMoreItem:(nullable ORKLearnMoreItem *)learnMoreItem;
 
 /**
  The format of the answer.

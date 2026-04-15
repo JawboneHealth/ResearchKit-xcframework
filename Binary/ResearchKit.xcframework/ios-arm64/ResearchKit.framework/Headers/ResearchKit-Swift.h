@@ -346,6 +346,9 @@ extern "C" {
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import CoreFoundation;
+@import ObjectiveC;
+@import UIKit;
 #endif
 
 #import <ResearchKit/ResearchKit.h>
@@ -370,26 +373,115 @@ extern "C" {
 
 #if defined(__OBJC__)
 
-@class NSString;
-@class NSURL;
-@interface ORKRecorder (SWIFT_EXTENSION(ResearchKit))
-/// A short string that uniquely identifies the recorder (usually assigned by the recorder configuration).
-/// The identifier is reproduced in the results of a recorder created from this configuration. In fact, the only way to link a result
-/// (an <code>ORKFileResult</code> object) to the recorder that generated it is to look at the value of
-/// <code>identifier</code>. To accurately identify recorder results, you need to ensure that recorder identifiers
-/// are unique within each step.
-/// In some cases, it can be useful to link the recorder identifier to a unique identifier in a
-/// database; in other cases, it can make sense to make the identifier human
-/// readable.
-@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
-/// The file URL of the output directory configured during initialization.
-/// Typically, you set the <code>outputDirectory</code> property for the <code>ORKTaskViewController</code> object
-/// before presenting the task.
-@property (nonatomic, readonly, copy) NSURL * _Nullable outputDirectory;
-/// The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written.
-/// If the value is 0, data is written to only one file and not rolled over to multiple files.
-@property (nonatomic, readonly) NSInteger rollingFileSizeThreshold;
+@class NSCoder;
+@class CALayer;
+@class UIEvent;
+@class UIView;
+@class UITouch;
+SWIFT_CLASS("_TtC11ResearchKit12CircleSlider")
+@interface CircleSlider : UISlider
+- (void)awakeFromNib;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)layoutSublayersOfLayer:(CALayer * _Nonnull)layer;
+- (UIView * _Nullable)hitTest:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)continueTrackingWithTouch:(UITouch * _Nonnull)touch withEvent:(UIEvent * _Nullable)event SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
 @end
+
+@class NSString;
+SWIFT_CLASS("_TtC11ResearchKit17ORKLandoltCResult")
+@interface ORKLandoltCResult : ORKResult
+- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (NSString * _Nonnull)descriptionWithNumberOfPaddingSpaces:(NSUInteger)numberOfPaddingSpaces SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithIdentifier:(NSString * _Nonnull)identifier SWIFT_UNAVAILABLE;
+@end
+
+SWIFT_ENUM_FWD_DECL(NSInteger, VisionStepType)
+SWIFT_ENUM_FWD_DECL(NSInteger, VisionStepLeftOrRightEye)
+SWIFT_CLASS("_TtC11ResearchKit15ORKLandoltCStep")
+@interface ORKLandoltCStep : ORKActiveStep
++ (Class _Nonnull)stepViewControllerClass SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithIdentifier:(NSString * _Nonnull)identifier testType:(enum VisionStepType)testType eyeToTest:(enum VisionStepLeftOrRightEye)eyeToTest OBJC_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) BOOL allowsBackNavigation;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithIdentifier:(NSString * _Nonnull)identifier SWIFT_UNAVAILABLE;
+@end
+
+SWIFT_CLASS("_TtC11ResearchKit19ORKLandoltCStepView")
+@interface ORKLandoltCStepView : UIView
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+- (nonnull instancetype)initWithFrame:(CGRect)frame SWIFT_UNAVAILABLE;
+@end
+
+@class ORKStep;
+@class ORKStepResult;
+SWIFT_CLASS("_TtC11ResearchKit29ORKLandoltCStepViewController")
+@interface ORKLandoltCStepViewController : ORKActiveStepViewController
+- (nonnull instancetype)initWithStep:(ORKStep * _Nullable)step OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
+@property (nonatomic, readonly, strong) ORKStepResult * _Nullable result;
+- (void)viewDidLoad;
+- (void)stepDidFinish;
+@end
+
+SWIFT_CLASS("_TtC11ResearchKit20ORKSwiftStroopResult")
+@interface ORKSwiftStroopResult : ORKResult
+- (nonnull instancetype)initWithIdentifier:(NSString * _Nonnull)identifier OBJC_DESIGNATED_INITIALIZER;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+- (NSString * _Nonnull)descriptionWithNumberOfPaddingSpaces:(NSUInteger)numberOfPaddingSpaces SWIFT_WARN_UNUSED_RESULT;
+@end
+
+SWIFT_CLASS("_TtC11ResearchKit18ORKSwiftStroopStep")
+@interface ORKSwiftStroopStep : ORKActiveStep
++ (Class _Nonnull)stepViewControllerClass SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithIdentifier:(NSString * _Nonnull)identifier OBJC_DESIGNATED_INITIALIZER;
+- (void)validateParameters;
+- (BOOL)startsFinished SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, readonly) BOOL allowsBackNavigation;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+@end
+
+SWIFT_CLASS("_TtC11ResearchKit32ORKSwiftStroopStepViewController")
+@interface ORKSwiftStroopStepViewController : ORKActiveStepViewController
+- (nonnull instancetype)initWithStep:(ORKStep * _Nullable)step OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder SWIFT_UNAVAILABLE;
+- (void)viewDidLoad;
+- (void)viewDidAppear:(BOOL)animated;
+- (void)stepDidFinish;
+@property (nonatomic, readonly, strong) ORKStepResult * _Nullable result;
+- (void)start;
+@end
+
+@class ORKAnswerFormat;
+SWIFT_CLASS("_TtC11ResearchKit18SwiftUIViewFactory")
+@interface SwiftUIViewFactory : NSObject
+@property (nonatomic, copy) void (^ _Nullable answerDidUpdateClosure)(id _Nonnull);
+- (UIView * _Nullable)makeSwiftUIViewWithAnswerFormat:(ORKAnswerFormat * _Nonnull)answerFormat answer:(id _Nonnull)answer SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+typedef SWIFT_ENUM(NSInteger, VisionStepLeftOrRightEye, open) {
+  VisionStepLeftOrRightEyeLeft = 0,
+  VisionStepLeftOrRightEyeRight = 1,
+};
+
+typedef SWIFT_ENUM(NSInteger, VisionStepType, open) {
+  VisionStepTypeVisualAcuity = 0,
+  VisionStepTypeContrastSensitivity = 1,
+};
 
 #endif // defined(__OBJC__)
 #if __has_attribute(external_source_symbol)

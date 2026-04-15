@@ -37,11 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKLearnMoreView;
 @protocol ORKLearnMoreViewDelegate;
 
-/**
- An object that allows additional information to be
- presented with a question.
- */
-
 ORK_CLASS_AVAILABLE
 @interface ORKLearnMoreItem : NSObject <NSCopying, NSSecureCoding>
 

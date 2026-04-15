@@ -29,18 +29,16 @@
  */
 
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-
-#if TARGET_OS_IOS
 #import <ResearchKit/ORKTask.h>
-#endif
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A collection of steps that is presented in a fixed order.
+ The `ORKOrderedTask` class implements all the methods in the `ORKTask` protocol and represents a 
+ task that assumes a fixed order for its steps.
  
  In the ResearchKit framework, any simple sequential task, such as a survey or an active task, can
  be represented as an ordered task.

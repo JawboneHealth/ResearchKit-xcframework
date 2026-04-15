@@ -38,14 +38,15 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import <ResearchKit/ORKStep.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A step that displays a label and an activity-indicator mask.
+ The `ORKWaitStep` class represents a step that displays a label and an activity
+ indicator mask.
  
  This task can be used to indicate to a user that a process is occuring that does
     not need their input, and possibly indicate the progress that process has made.

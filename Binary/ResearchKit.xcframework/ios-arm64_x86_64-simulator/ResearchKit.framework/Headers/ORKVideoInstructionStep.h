@@ -38,9 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 @class ORKBundleAsset;
 
 /**
- An object that gives the participant video-based instructions for a task.
+ An `ORKVideoInstructionStep` object gives the participant video-based instructions for a task.
  
  You can use video instruction steps to present video content during a task.
+ 
  */
 ORK_CLASS_AVAILABLE
 @interface ORKVideoInstructionStep : ORKInstructionStep

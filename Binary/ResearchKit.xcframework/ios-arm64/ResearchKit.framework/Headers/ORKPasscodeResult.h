@@ -35,7 +35,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A result object of the passcode step.
+ The `ORKPasscodeResult` class records the results of a passcode step.
  
  The passcode result object contains a boolean indicating whether the passcode was saved or not.
  */

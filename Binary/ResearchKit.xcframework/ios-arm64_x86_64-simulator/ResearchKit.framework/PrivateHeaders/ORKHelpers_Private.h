@@ -29,11 +29,9 @@
  */
 
 
-#import <Foundation/Foundation.h>
-#if TARGET_OS_IOS
-#import <ResearchKit/ORKDefines.h>
-#endif
+@import Foundation;
 
+#import <ResearchKit/ORKDefines.h>
 
 
 NS_ASSUME_NONNULL_BEGIN

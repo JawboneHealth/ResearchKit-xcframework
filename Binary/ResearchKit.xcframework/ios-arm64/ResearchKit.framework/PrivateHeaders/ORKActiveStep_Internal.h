@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasTitle;
 - (BOOL)hasText;
 - (BOOL)hasVoice;
-- (BOOL)hasAudioRecording;
+
 @end
 
 NS_ASSUME_NONNULL_END

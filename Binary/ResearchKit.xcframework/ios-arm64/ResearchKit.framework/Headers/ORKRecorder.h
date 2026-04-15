@@ -30,7 +30,7 @@
  */
 
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import <ResearchKit/ORKDefines.h>
 #import <Availability.h>
 
@@ -38,15 +38,16 @@
 #import <HealthKit/HealthKit.h>
 #endif
 
+
 NS_ASSUME_NONNULL_BEGIN
 
-@class ORKFileResult;
 @class ORKRecorder;
 @class ORKResult;
 @class ORKStep;
 
 /**
- A base class for recorder configuration objects that can be attached to an active step.
+ The `ORKRecorderConfiguration` class is the abstract base class for recorder configurations
+ that can be attached to an active step (`ORKActiveStep`).
  
  Recorder configurations provide an easy way to collect CoreMotion
  or other sensor data into a serialized format during the duration of an active step.
@@ -88,40 +89,14 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, readonly) NSString *identifier;
 
 /**
- The URL pointing to the directory in which the recorder should write all output file data as needed
- (if producing `ORKFileResult` instances).
- 
- It must be readwrite while this property can be set via ORKTaskViewController.
- */
-@property (nonatomic, copy, readwrite, nullable) NSURL *outputDirectory;
-
-/**
- The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written.
- If the value is 0, data is written to only one file and not rolled over to multiple files.
- */
-@property (nonatomic, assign, readonly) size_t rollingFileSizeThreshold;
-
-/**
- Returns a recorder instance using this configuration.
- 
- @param step                The step for which this recorder is being created.
- 
- @return A configured recorder instance.
- */
-- (nullable ORKRecorder *)recorderForStep:(nullable ORKStep *)step;
-
-/**
  Returns a recorder instance using this configuration.
  
  @param step                The step for which this recorder is being created.
  @param outputDirectory     The directory in which all output file data should be written (if producing `ORKFileResult` instances).
  
  @return A configured recorder instance.
- 
- This method is being deprecated. Set the `outputDirectory` when initializing your configuration instead, then call `recorderForStep:` instead.
  */
-- (nullable ORKRecorder *)recorderForStep:(ORKStep *)step
-                          outputDirectory:(nullable NSURL *)outputDirectory DEPRECATED_MSG_ATTRIBUTE("This function is being deprecated. Instead, set the `outputDirectory` property when initializing your configuration, then call recorderForStep:.");
+- (nullable ORKRecorder *)recorderForStep:(nullable ORKStep *)step outputDirectory:(nullable NSURL *)outputDirectory;
 
 /**
  Returns the HealthKit types for which this recorder requires read access in a set of `HKSampleType` objects.
@@ -137,11 +112,13 @@ ORK_CLASS_AVAILABLE
 #if ORK_FEATURE_HEALTHKIT_AUTHORIZATION
 - (nullable NSSet<HKObjectType *> *)requestedHealthKitTypesForReading;
 #endif
+
 @end
 
 
 /**
- A configuration object that collects accelerometer data during an active step.
+ The `ORKAccelerometerRecorderConfiguration` subclass configures
+ the collection of accelerometer data during an active step.
  
  Accelerometer data is serialized to JSON and returned as an `ORKFileResult` object.
  For details on the format, see `CMAccelerometerData+ORKJSONDictionary`.
@@ -161,44 +138,14 @@ ORK_CLASS_AVAILABLE
 /**
  Returns an initialized accelerometer recorder configuration using the specified frequency.
  
- @param identifier  The unique identifier of the recorder configuration.
- @param frequency   The frequency of accelerometer data collection in samples per second (Hz).
- 
- @return An initialized accelerometer recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier frequency:(double)frequency;
-
-/**
- Returns an initialized accelerometer recorder configuration using the specified frequency.
- 
  This method is the designated initializer.
  
  @param identifier  The unique identifier of the recorder configuration.
  @param frequency   The frequency of accelerometer data collection in samples per second (Hz).
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
  
  @return An initialized accelerometer recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                         frequency:(double)frequency
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized accelerometer recorder configuration using the specified frequency.
- 
- This method is the designated initializer.
- 
- @param identifier  The unique identifier of the recorder configuration.
- @param frequency   The frequency of accelerometer data collection in samples per second (Hz).
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold   The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized accelerometer recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                         frequency:(double)frequency
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSString *)identifier frequency:(double)frequency NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a new accelerometer recorder configuration initialized from data in the given unarchiver.
@@ -213,7 +160,8 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- A configuration that records audio data during an active step.
+ The `ORKAudioRecorderConfiguration` class represents a configuration that records
+ audio data during an active step.
  
  An `ORKAudioRecorderConfiguration` generates an `ORKAudioRecorder` object.
  
@@ -238,50 +186,16 @@ ORK_CLASS_AVAILABLE
 /**
  Returns an initialized audio recorder configuration using the specified settings.
  
- For information on the settings available for an audio recorder, see "AV Foundation Audio Settings Constants".
- 
- @param identifier          The unique identifier of the recorder configuration.
- @param recorderSettings    The settings for the recording session.
- 
- @return An initialized audio recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier recorderSettings:(NSDictionary *)recorderSettings;
-
-/**
- Returns an initialized audio recorder configuration using the specified settings.
- 
  This method is the designated initializer.
  
  For information on the settings available for an audio recorder, see "AV Foundation Audio Settings Constants".
  
  @param identifier          The unique identifier of the recorder configuration.
  @param recorderSettings    The settings for the recording session.
- @param outputDirectory     The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
  
  @return An initialized audio recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                  recorderSettings:(NSDictionary *)recorderSettings
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized audio recorder configuration using the specified settings.
- 
- This method is the designated initializer.
- 
- For information on the settings available for an audio recorder, see "AV Foundation Audio Settings Constants".
- 
- @param identifier          The unique identifier of the recorder configuration.
- @param recorderSettings    The settings for the recording session.
- @param outputDirectory     The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized audio recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                  recorderSettings:(NSDictionary *)recorderSettings
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSString *)identifier recorderSettings:(NSDictionary *)recorderSettings NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a new audio recorder configuration initialized from data in the given unarchiver.
@@ -296,7 +210,8 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- A configuration object that records device motion data during an active step.
+ The `ORKDeviceMotionRecorderConfiguration` class represents a configuration
+ that records device motion data during an active step.
  
  Device motion data is the processed motion data provided by CoreMotion and obtained
  from a `CMMotionManager` object. The data can include measures of the overall device orientation
@@ -320,44 +235,14 @@ ORK_CLASS_AVAILABLE
 /**
  Returns an initialized device motion recorder configuration using the specified frequency.
  
- @param identifier  The unique identifier of the recorder configuration.
- @param frequency   Motion data collection frequency in samples per second (Hz).
- 
- @return An initialized device motion recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier frequency:(double)frequency;
-
-/**
- Returns an initialized device motion recorder configuration using the specified frequency.
- 
  This method is the designated initializer.
  
  @param identifier  The unique identifier of the recorder configuration.
  @param frequency   Motion data collection frequency in samples per second (Hz).
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
  
  @return An initialized device motion recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                         frequency:(double)frequency
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized device motion recorder configuration using the specified frequency.
- 
- This method is the designated initializer.
- 
- @param identifier  The unique identifier of the recorder configuration.
- @param frequency   Motion data collection frequency in samples per second (Hz).
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized device motion recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                         frequency:(double)frequency
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSString *)identifier frequency:(double)frequency NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a new device motion recorder configuration initialized from data in the given unarchiver.
@@ -372,7 +257,8 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- A configuration object that records pedometer data during an active step.
+ The `ORKPedometerRecorderConfiguration` class represents a configuration
+ that records pedometer data during an active step.
  
  Pedometer data consists of information about the processed steps provided by CoreMotion, obtained
  from a `CMPedometer` object. The pedometer object essentially reports the total number of steps taken since the
@@ -395,39 +281,13 @@ ORK_CLASS_AVAILABLE
  The recorder instantiates a `CMPedometer` object, so no additional parameters besides
  the identifier are required.
 
+ This method is the designated initializer.
+
  @param identifier   The unique identifier of the recorder configuration.
  
  @return An initialized pedometer recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier;
-
-/**
- Returns an initialized pedometer recorder configuration.
-
- The recorder instantiates a `CMPedometer` object.
- 
- @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- 
- @return An initialized pedometer recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized pedometer recorder configuration.
-
- The recorder instantiates a `CMPedometer` object.
- 
- @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized pedometer recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a new pedometer recorder configuration initialized from data in the given unarchiver.
@@ -442,7 +302,8 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- A configuration object that records location data during an active step.
+ The `ORKLocationRecorderConfiguration` class represents a configuration
+ that records location data during an active step.
  
  The location data reported is the location provided by CoreLocation.
  
@@ -459,47 +320,19 @@ ORK_CLASS_AVAILABLE
  
  No additional parameters besides the identifier are required.
  */
-
-#if ORK_FEATURE_CLLOCATIONMANAGER_AUTHORIZATION
 ORK_CLASS_AVAILABLE
 @interface ORKLocationRecorderConfiguration : ORKRecorderConfiguration
 
 /**
  Returns an initialized location recorder configuration.
-
- @param identifier   The unique identifier of the recorder configuration.
- 
- @return An initialized location recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier;
-
-/**
- Returns an initialized location recorder configuration.
  
  This method is the designated initializer.
 
  @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
  
  @return An initialized location recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized location recorder configuration.
- 
- This method is the designated initializer.
-
- @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized location recorder configuration.
- */
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a new location recorder configuration initialized from data in the given unarchiver.
@@ -511,10 +344,106 @@ ORK_CLASS_AVAILABLE
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 @end
-#endif 
+
 
 /**
- A configuration object that records streaming audio data during an active step.
+ The `ORKHealthQuantityTypeRecorderConfiguration` class represents a configuration
+ that records data from a HealthKit quantity type during an active step.
+ 
+ Before you can use this configuration, you must use Xcode to enable the appropriate HealthKit entitlement
+ for your app.
+ 
+ HealthKit quantity type data is serialized to JSON and returned as an `ORKFileResult` object.
+ For details on the format, see `HKSample+ORKJSONDictionary`.
+ 
+ To use a recorder, include its configuration in the `recorderConfigurations` property
+ of an `ORKActiveStep` object, include that step in a task, and present it with
+ a task view controller.
+ */
+
+#if ORK_FEATURE_HEALTHKIT_AUTHORIZATION
+ORK_CLASS_AVAILABLE
+@interface ORKHealthQuantityTypeRecorderConfiguration : ORKRecorderConfiguration
+
+/**
+ Returns an initialized health quantity type recorder configuration using the specified quantity type and unit designation.
+ 
+ This method is the designated initializer.
+ 
+ @param identifier      The unique identifier of the recorder configuration.
+ @param quantityType    The quantity type that should be collected during the active task.
+ @param unit            The unit for the data that should be collected and serialized.
+ 
+ @return An initialized health quantity type recorder configuration.
+ */
+- (instancetype)initWithIdentifier:(NSString *)identifier healthQuantityType:(HKQuantityType *)quantityType unit:(HKUnit *)unit NS_DESIGNATED_INITIALIZER;
+
+/**
+ Returns a new health quantity type recorder configuration initialized from data in the given unarchiver.
+ 
+ @param aDecoder    Coder from which to initialize the health quantity type recorder configuration.
+ 
+ @return A new health quantity type recorder configuration.
+ */
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
+/**
+ The quantity type to be collected from HealthKit. (read-only)
+ */
+@property (nonatomic, readonly, copy) HKQuantityType *quantityType;
+
+/**
+ The unit in which to serialize the data from HealthKit. (read-only)
+ */
+@property (nonatomic, readonly, copy) HKUnit *unit;
+
+@end
+
+ORK_CLASS_AVAILABLE
+#if defined(__IPHONE_12_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_12_0
+API_AVAILABLE(ios(12.0))
+@interface ORKHealthClinicalTypeRecorderConfiguration : ORKRecorderConfiguration
+
+/**
+ Returns an initialized health clinical type recorder configuration using the specified clinical type.
+ 
+ This method is the designated initializer.
+ 
+ @param identifier              The unique identifier of the recorder configuration.
+ @param healthClinicalType      The HKClinicalType that should be collected during the active task.
+ @param healthFHIRResourceType  The HKFHIRResourceType that should be used as predicate while querying for the healthClinicalType. Providing a HKFHIRResourceType that does not correspond to a HKClinicalType will NOT generate any result.
+ 
+ @return An initialized health clinical type recorder configuration.
+ */
+- (instancetype)initWithIdentifier:(NSString *)identifier
+                healthClinicalType:(HKClinicalType *)healthClinicalType
+            healthFHIRResourceType:(nullable HKFHIRResourceType)healthFHIRResourceType NS_DESIGNATED_INITIALIZER API_AVAILABLE(ios(12.0));
+
+/**
+ Returns a new health clinical type recorder configuration initialized from data in the given unarchiver.
+ 
+ @param aDecoder    Coder from which to initialize the health clinical type recorder configuration.
+ 
+ @return A new health clinical type recorder configuration.
+ */
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
+/**
+ The HKClinicalType to be collected from HealthKit. (read-only)
+ */
+@property (nonatomic, readonly, copy) HKClinicalType *healthClinicalType;
+
+/**
+ The HKFHIRResourceType to used as predicate for HKQuery. (read-only)
+ */
+@property (nonatomic, readonly, copy) HKFHIRResourceType healthFHIRResourceType;
+
+@end
+#endif
+#endif 
+/**
+ The `ORKStreamingAudioRecorderConfiguration` class represents a configuration that records streaming
+ audio data during an active step.
  
  An `ORKStreamingAudioRecorderConfiguration` generates an `ORKStreamingAudioRecorder` object.
  
@@ -526,7 +455,7 @@ ORK_CLASS_AVAILABLE
 @interface ORKStreamingAudioRecorderConfiguration : ORKRecorderConfiguration
 
 /**
- Returns an initialized streaming audio recorder configuration.
+ Returns an initialized audio recorder configuration.
  
  This method is the designated initializer.
  
@@ -534,40 +463,12 @@ ORK_CLASS_AVAILABLE
  
  @return An initialized audio recorder configuration.
  */
-- (instancetype)initWithIdentifier:(NSString *)identifier;
+- (instancetype)initWithIdentifier:(NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 /**
- Returns an initialized streaming audio recorder configuration.
+ Returns a new audio recorder configuration initialized from data in the given unarchiver.
  
- This method is the designated initializer.
-
- @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- 
- @return An initialized streaming audio recorder configuration.
-*/
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory;
-
-/**
- Returns an initialized streaming audio recorder configuration.
- 
- This method is the designated initializer.
-
- @param identifier   The unique identifier of the recorder configuration.
- @param outputDirectory The url to the directory in which all output file data should be written (if producing `ORKFileResult` instances).
- @param rollingFileSizeThreshold The file-size threshold in bytes used to determine when data is rolled over to multiple files as data is being written. If the value is 0, data is written to only one file and not rolled over to multiple files.
- 
- @return An initialized streaming audio recorder configuration.
-*/
-- (instancetype)initWithIdentifier:(NSString *)identifier
-                   outputDirectory:(nullable NSURL *)outputDirectory
-          rollingFileSizeThreshold:(size_t)rollingFileSizeThreshold NS_DESIGNATED_INITIALIZER;
-
-/**
- Returns a new streaming audio recorder configuration initialized from data in the given unarchiver.
- 
- @param aDecoder    Coder from which to initialize the streaming audio recorder configuration.
+ @param aDecoder    Coder from which to initialize the audio recorder configuration.
  
  @return A new audio recorder configuration.
  */
@@ -590,9 +491,9 @@ need to implement it.
  Typically, this method is called once when recording is stopped.
  
  @param recorder        The generating recorder object.
- @param results          The generated results.
+ @param result          The generated result.
  */
-- (void)recorder:(ORKRecorder *)recorder didCompleteWithResults:(NSArray<ORKFileResult *> *)results;
+- (void)recorder:(ORKRecorder *)recorder didCompleteWithResult:(nullable ORKResult *)result;
 
 /**
  Tells the delegate that recording failed.
@@ -608,7 +509,7 @@ need to implement it.
 
 
 /**
- A recorder is the runtime companion to a recorder configuration object, and is
+ A recorder is the runtime companion to an `ORKRecorderConfiguration` object, and is
  usually generated by one.
  
  During active tasks, it is often useful to collect one or more pieces of data
@@ -622,8 +523,7 @@ need to implement it.
  The step view controller starts the recorder when the active step is started, and stops the
  recorder when the active step is finished.
  
- The results of recording are typically written to a file specified by the value of the configuration's
- `outputDirectory` property.
+ The results of recording are typically written to a file specified by the value of the `outputDirectory` property.
  
  Usually, the `ORKActiveStepViewController` object is the recorder's delegate, and it
  receives callbacks when errors occur or when recording is complete.
@@ -639,6 +539,20 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, weak, nullable) id<ORKRecorderDelegate> delegate;
 
 /**
+ A short string that uniquely identifies the recorder (usually assigned by the recorder configuration).
+ 
+ The identifier is reproduced in the results of a recorder created from this configuration. In fact, the only way to link a result
+ (an `ORKFileResult` object) to the recorder that generated it is to look at the value of
+ `identifier`. To accurately identify recorder results, you need to ensure that recorder identifiers
+ are unique within each step.
+ 
+ In some cases, it can be useful to link the recorder identifier to a unique identifier in a
+ database; in other cases, it can make sense to make the identifier human
+ readable.
+ */
+@property (nonatomic, copy, readonly) NSString *identifier;
+
+/**
  The step that produced this recorder, configured during initialization.
  */
 @property (nonatomic, strong, readonly, nullable) ORKStep *step;
@@ -646,7 +560,15 @@ ORK_CLASS_AVAILABLE
 /**
  The configuration that produced this recorder.
  */
-@property (nonatomic, strong, readonly) ORKRecorderConfiguration *configuration;
+@property (nonatomic, strong, readonly, nullable) ORKRecorderConfiguration *configuration;
+
+/**
+ The file URL of the output directory configured during initialization.
+ 
+ Typically, you set the `outputDirectory` property for the `ORKTaskViewController` object
+ before presenting the task.
+ */
+@property (nonatomic, copy, readonly, nullable) NSURL *outputDirectory;
 
 /**
  Returns the log prefix for the log file.

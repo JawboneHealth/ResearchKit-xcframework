@@ -29,18 +29,18 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-
-#if TARGET_OS_IOS
 #import <ResearchKit/ORKInstructionStep.h>
-#import <ResearchKit/ORKTask.h>
-#endif
+#import <ResearchKit/ORKTaskViewController.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+
 /**
- A subclass of the instruction step that includes animated imagery for task completion.
+ The `ORKCompletionStep` class is a subclass of `ORKInstructionStep` which behaves like
+ an instruction step, but includes animated imagery that thanks the user
+ for participating in the task.
  */
 ORK_CLASS_AVAILABLE API_AVAILABLE(ios(11.0), watchos(6.0))
 @interface ORKCompletionStep : ORKInstructionStep
@@ -51,7 +51,7 @@ ORK_CLASS_AVAILABLE API_AVAILABLE(ios(11.0), watchos(6.0))
 
 @interface ORKCompletionStep ()
 
-@property (nonatomic) ORKTaskFinishReason reasonForCompletion;
+@property (nonatomic) ORKTaskViewControllerFinishReason reasonForCompletion;
 
 @end
 

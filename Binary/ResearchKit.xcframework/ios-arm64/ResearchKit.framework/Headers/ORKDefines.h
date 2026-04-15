@@ -39,6 +39,3 @@
 #define ORK_AVAILABLE_DECL
 
 #define ORK_IOS_10_WATCHOS_3_AVAILABLE (NSClassFromString(@"HKWorkoutConfiguration") != nil)
-
-#define ORK_TO_BE_DEPRECATED(message) \
-__deprecated_msg(message)

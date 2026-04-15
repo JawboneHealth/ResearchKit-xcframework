@@ -29,13 +29,9 @@
  */
 
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-
-
-#if TARGET_OS_IOS
 #import <ResearchKit/ORKStep.h>
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,9 +55,6 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSAttributedString *attributedDetailText;
 
 @property (nonatomic) BOOL centerImageVertically;
-
-@property(nonatomic) NSInteger type;
-
 
 @end
 

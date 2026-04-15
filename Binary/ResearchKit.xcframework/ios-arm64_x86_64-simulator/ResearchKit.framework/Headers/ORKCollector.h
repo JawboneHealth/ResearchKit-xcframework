@@ -36,6 +36,7 @@
 #import <HealthKit/HealthKit.h>
 #endif
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class ORKCollector;
@@ -82,7 +83,7 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- An object that collects HKSample.
+ ORKHealthCollector collects HKSample.
  
  It cannot be initiated directly. 
  Use `addHealthCollectorWithSampleType:`to add one to a `ORKDataCollectionManager`.
@@ -116,7 +117,7 @@ ORK_CLASS_AVAILABLE
 
 
 /**
- An object that collects HKCorrelation.
+ ORKHealthCollector collects HKCorrelation.
  
  It cannot be initiated directly.
  Use `addHealthCorrelationCollectorWithCorrelationType:`to add one to a `ORKDataCollectionManager`.
@@ -150,10 +151,10 @@ ORK_CLASS_AVAILABLE
 @property (copy, readonly) HKQueryAnchor *lastAnchor;
 
 @end
-#endif
+#endif 
 
 /**
- An object that collects CMMotionActivity.
+ ORKHealthCollector collects CMMotionActivity.
  
  It cannot be initiated directly.
  Use `addMotionActivityCollectorWithStartDate:`to add one to a `ORKDataCollectionManager`.

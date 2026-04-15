@@ -27,9 +27,9 @@ echo "=== ResearchKit XCFramework Builder ==="
 # Clone upstream
 echo "Cloning ResearchKit..."
 if [ -n "$VERSION" ]; then
-    git clone --depth 1 --branch "$VERSION" "$UPSTREAM_URL" "$WORK_DIR/ResearchKit"
+    git clone --branch "$VERSION" "$UPSTREAM_URL" "$WORK_DIR/ResearchKit"
 else
-    git clone --depth 1 "$UPSTREAM_URL" "$WORK_DIR/ResearchKit"
+    git clone "$UPSTREAM_URL" "$WORK_DIR/ResearchKit"
     VERSION=$(cd "$WORK_DIR/ResearchKit" && git describe --tags --abbrev=0 2>/dev/null || echo "latest")
 fi
 echo "Building version: $VERSION"
@@ -41,7 +41,7 @@ echo "Building for iOS device..."
 xcodebuild archive \
     -project "$PROJECT" \
     -scheme ResearchKit \
-    -destination 'generic/platform=iOS' \
+    -sdk iphoneos \
     -archivePath "$WORK_DIR/ResearchKit-ios" \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
@@ -52,7 +52,7 @@ echo "Building for iOS Simulator..."
 xcodebuild archive \
     -project "$PROJECT" \
     -scheme ResearchKit \
-    -destination 'generic/platform=iOS Simulator' \
+    -sdk iphonesimulator \
     -archivePath "$WORK_DIR/ResearchKit-sim" \
     SKIP_INSTALL=NO \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \

@@ -29,15 +29,14 @@
  */
 
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import <ResearchKit/ORKDefines.h>
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- A class that represents a signature in a consent document object.
- 
+ The `ORKConsentSignature` class represents a signature in as `ORKConsentDocument` object.
  The signature can be that of an investigator, possibly prefilled with
  an image, date, and first and last name; or you might need to collect the details of a signature.
  

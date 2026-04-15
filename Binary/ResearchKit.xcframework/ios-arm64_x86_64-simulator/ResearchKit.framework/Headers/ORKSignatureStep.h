@@ -30,7 +30,7 @@
  */
 
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import <ResearchKit/ORKStep.h>
 
 
